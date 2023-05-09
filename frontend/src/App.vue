@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { inject, onMounted, reactive } from 'vue'
   import TodosGateway from './infra/gateway/TodosGateway';
-import TodoList from './entity/TodoList';
+  import TodoList from './entity/TodoList';
 
   const todoList: any = reactive(new TodoList());
   const description = ""
@@ -14,16 +14,16 @@ import TodoList from './entity/TodoList';
 </script>
 
 <template>
-    <div class="total">Total: {{ getTotal() }}</div>
-    <div class="completed">Completed: {{ getCompleted() }}%</div>
-    <div v-for="todo in todos">
+    <div class="total">Total: {{ todoList.getTotal() }}</div>
+    <div class="completed">Completed: {{ todoList.getCompleted() }}%</div>
+    <div v-for="todo in todoList.todos">
       <div class="todo-description" type="text">{{ todo.description }}</div>
       <div class="todo-done" type="text">{{ todo.done }}</div>
-      <button class="todo-toggle-done-button" @click="toggleDone(todo)">done/undone</button>
-      <button class="todo-delete-button" @click="deleteTodo(todo)">delete</button>
+      <button class="todo-toggle-done-button" @click="todo.toggleDone()">done/undone</button>
+      <button class="todo-delete-button" @click="todoList.deleteTodo(todo)">delete</button>
     </div>
     <input class="todo-description-input" type="text" v-model="description" />
-    <button class="add-todo-button" @click="addTodo(description)" type="submit">Add</button>
+    <button class="add-todo-button" @click="todoList.addTodo(description)" type="submit">Add</button>
 </template>
 
 <style scoped>
