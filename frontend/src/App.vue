@@ -1,39 +1,15 @@
 <script setup lang="ts">
   import { inject, onMounted, reactive } from 'vue'
   import TodosGateway from './infra/gateway/TodosGateway';
+import TodoList from './entity/TodoList';
 
-  const todos: any = reactive([]);
+  const todoList: any = reactive(new TodoList());
   const description = ""
-
-  function getTotal() {
-    return todos.length
-  }
-
-  function getCompleted() {
-    const total = getTotal()
-    if(total === 0) return 0;
-    const completed = todos.filter((todo: any) => todo.done).length
-
-    return Math.round((completed / total) * 100)
-  }
-
-  function addTodo(description: string) {
-    if (todos.some((todo: any) => todo.description === description)) return;
-    todos.push({ description, done: false })
-  }
-
-  function toggleDone(todo: any) {
-    todo.done = !todo.done
-  }
-
-  function deleteTodo(todo: any) {
-    todos.splice(todos.indexOf(todo), 1)
-  }
 
   onMounted(async () => {
     const todosGateway = inject('todosGateway') as TodosGateway
     const todosData = await todosGateway.getTodos()
-    todos.push(...todosData)
+    todoList.addTodos(todosData)
   })
 </script>
 
