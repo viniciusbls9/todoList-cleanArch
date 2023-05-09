@@ -19,9 +19,15 @@ export default class TodoList {
     return Math.round((completed / total) * 100)
   }
 
-  addTodo(description: string) {
+  addTodo(description: string, done = false) {
     if (this.todos.some((todo: any) => todo.description === description)) return;
-    this.todos.push(new Todo(description))
+    this.todos.push(new Todo(description, done))
+  }
+
+  addTodos (todos: any) {
+    for (const todo of todos) {
+      this.addTodo(todo.description, todo.done)
+    }
   }
 
   deleteTodo(todo: any) {
