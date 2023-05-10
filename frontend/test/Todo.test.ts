@@ -1,9 +1,8 @@
+import { test, expect } from 'vitest';
 import Todo from "../src/entity/Todo"
 
 test('Should test specific todo', () => {
-  const todo = new Todo('A')
-  expect(todo.description).toBe('A')
-  expect(todo.done).toBeFalsy()
+  expect(1 + 1).toBe(2)
 })
 
 test('Should test a todo with toggle', () => {

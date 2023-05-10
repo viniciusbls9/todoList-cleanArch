@@ -1,20 +1,35 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
-    "moduleResolution": "Node",
-    "strict": true,
-    "jsx": "preserve",
-    "resolveJsonModule": true,
-    "isolatedModules": false,
-    "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "noEmit": true,
-	"allowJs": true,
-	"types": ["vitest/globals"]
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@assets/*": ["presentation/assets/*"],
+      "@components/*": ["presentation/components/*"],
+      "@hooks/*": ["hooks/*"],
+      "@presentation/*": ["presentation/*"],
+      "@infra/*": ["infra/*"],
+      "@entities/*": ["entities/*"],
+      "@gateways/*": ["gateways/*"],
+      "@context/*": ["context/*"],
+    }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "test"],
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

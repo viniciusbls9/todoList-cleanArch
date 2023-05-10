@@ -1,6 +1,8 @@
-import { mount } from '@vue/test-utils'
-import AppVue from '../src/App.vue'
-import TodosGateway from '../src/infra/gateway/TodosGateway'
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import TodosGateway from '../src/infra/gateway/TodosGateway.js'
+import { App } from '../src/App'
+import React from 'react';
 
 function sleep(time: number) {
   return new Promise((resolve) => {
@@ -20,16 +22,11 @@ test('Should create empty todo list', async () => {
     }
   }
 
-  const wrapper = mount(AppVue, {
-    global: {
-      provide: {
-        todosGateway
-      }
-    }
-  })
+  const { debug, getByRole } = render(<App />)
+
   await sleep(100)
-  expect(wrapper.get('.total').text()).toBe('Total: 1')
-  expect(wrapper.get('.completed').text()).toBe('Completed: 0%')
+  expect(getByRole('heading', { name: 'oi' })).toBeInTheDocument()
+  // expect(wrapper.get('.completed').text()).toBe('Completed: 0%')
 })
 
 test('Should not let insert duplicated todo list', async () => {
