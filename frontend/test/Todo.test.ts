@@ -13,3 +13,8 @@ test('Should test a todo with toggle', () => {
   expect(todo.done).toBeTruthy()
   
 })
+
+test('Should not create todo with empty description', () => {
+  expect(() => new Todo('')).toThrow(new Error('Invalid description'))
+  
+})
