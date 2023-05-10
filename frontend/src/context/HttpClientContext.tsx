@@ -6,11 +6,11 @@ import FetchAdapter from '@infra/http/FetchAdapter';
 const httpClientInstance = new FetchAdapter();
 
 export type HttpClientType = {
-  habitGateway: TodosGateway;
+  todosGateway: TodosGateway;
 };
 
 const defaultContext: HttpClientType = {
-  habitGateway: new TodosGatewayHttp(
+  todosGateway: new TodosGatewayHttp(
     httpClientInstance,
     'http://localhost:3000'
   )
@@ -19,13 +19,13 @@ const defaultContext: HttpClientType = {
 export const HttpClientContext = createContext(defaultContext);
 
 export const HttpClientProvider = ({ children }: PropsWithChildren) => {
-  const habitGateway = new TodosGatewayHttp(
+  const todosGateway = new TodosGatewayHttp(
     httpClientInstance,
     'http://localhost:3000'
   );
 
   return (
-    <HttpClientContext.Provider value={{ habitGateway }}>
+    <HttpClientContext.Provider value={{ todosGateway }}>
       {children}
     </HttpClientContext.Provider>
   );
