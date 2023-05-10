@@ -1,29 +1,11 @@
 <script setup lang="ts">
-  import { inject, onMounted, reactive } from 'vue'
-  import TodosGateway from './infra/gateway/TodosGateway';
-  import TodoList from './entity/TodoList';
+import TodoListView from './view/TodoListView.vue';
 
-  const todoList: any = reactive(new TodoList());
-  const description = ""
 
-  onMounted(async () => {
-    const todosGateway = inject('todosGateway') as TodosGateway
-    const todosData = await todosGateway.getTodos()
-    todoList.addTodos(todosData)
-  })
 </script>
 
 <template>
-    <div class="total">Total: {{ todoList.getTotal() }}</div>
-    <div class="completed">Completed: {{ todoList.getCompleted() }}%</div>
-    <div v-for="todo in todoList.todos">
-      <div class="todo-description" type="text">{{ todo.description }}</div>
-      <div class="todo-done" type="text">{{ todo.done }}</div>
-      <button class="todo-toggle-done-button" @click="todo.toggleDone()">done/undone</button>
-      <button class="todo-delete-button" @click="todoList.deleteTodo(todo)">delete</button>
-    </div>
-    <input class="todo-description-input" type="text" v-model="description" />
-    <button class="add-todo-button" @click="todoList.addTodo(description)" type="submit">Add</button>
+  <TodoListView></TodoListView>
 </template>
 
 <style scoped>
