@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TodosGateway from '../src/infra/gateway/TodosGateway.js'
 import { App } from '../src/App'
@@ -12,21 +12,12 @@ function sleep(time: number) {
   })
 }
 
-test('Should create empty todo list', async () => {
-  const todosGateway: TodosGateway = {
-    async getTodos (): Promise<any> {
-      return [
+test('Should render initial todo list', async () => {
+  const { findByRole } = render(<App />)
 
-        { description: 'My first todo', done: false }
-      ]
-    }
-  }
-
-  const { debug, getByRole } = render(<App />)
-
-  await sleep(100)
-  expect(getByRole('heading', { name: 'oi' })).toBeInTheDocument()
-  // expect(wrapper.get('.completed').text()).toBe('Completed: 0%')
+  // await sleep(100)
+  expect(await findByRole('heading', { name: 'Total: 1' })).toBeInTheDocument()
+  expect(await findByRole('heading', { name: 'Completed: 0%' })).toBeInTheDocument()
 })
 
 test('Should not let insert duplicated todo list', async () => {
