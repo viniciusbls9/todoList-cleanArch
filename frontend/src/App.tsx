@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 export const App = () => {
   const { todosGateway } = useHttpClient();
-  const [data, setData] = useState([])
   const [total, setTotal] = useState(0)
   const [completed, setCompleted] = useState(0)
 
@@ -13,7 +12,6 @@ export const App = () => {
     const fetchData = async () => {
       todoList = new TodoList()
       const todosData = await todosGateway.getTodos();
-      setData(todosData)
       todoList.addTodos(todosData);
       setTotal(todoList.getTotal())
       setCompleted(todoList.getCompleted())
@@ -24,9 +22,8 @@ export const App = () => {
 
   return (
     <div>
-      <p>todo: {JSON.stringify(data)}</p>
-      <div>Total: {total}</div>
-	    <div>Completed: {completed}%</div>
+      <h2>Total: {total}</h2>
+	    <h2>Completed: {completed}%</h2>
     </div>
   );
 };
