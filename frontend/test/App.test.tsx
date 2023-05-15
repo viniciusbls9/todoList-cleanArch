@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import TodosGateway from '../src/infra/gateway/TodosGateway.js'
 import { App } from '../src/App'
@@ -21,6 +21,7 @@ test('Should render initial todo list', async () => {
 })
 
 test('Should not let insert duplicated todo list', async () => {
+  const { findByRole, getByRole, container } = render(<App />)
   const todosGateway: TodosGateway = {
     async getTodos (): Promise<any> {
       return [
@@ -30,19 +31,14 @@ test('Should not let insert duplicated todo list', async () => {
     }
   }
 
-  const wrapper = mount(AppVue, {
-    global: {
-      provide: {
-        todosGateway
-      }
-    }
-  })
-  await sleep(100)
-  await wrapper.get('.todo-description-input').setValue('A')
-  await wrapper.get('.add-todo-button').trigger('click')
-  await wrapper.get('.todo-description-input').setValue('A')
-  await wrapper.get('.add-todo-button').trigger('click')
+  await sleep(500)
+  const input = screen.getByRole('input')
+  const button = container.getElementsByClassName('add-todo-button')[0]
+  fireEvent.change(input, { target: { value: 'A' }})
+  fireEvent.click(button)
+  fireEvent.change(input, { target: { value: 'A' }})
+  fireEvent.click(button)
 
-  expect(wrapper.get('.total').text()).toBe('Total: 2')
-  expect(wrapper.get('.completed').text()).toBe('Completed: 0%')
+  expect(await findByRole('heading', { name: 'Total: 1' })).toBeInTheDocument()
+  expect(await findByRole('heading', { name: 'Completed: 0%' })).toBeInTheDocument()
 })
