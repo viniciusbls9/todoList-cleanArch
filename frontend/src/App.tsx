@@ -1,15 +1,32 @@
-// import { Header } from '@components/Header';
-// import { SummaryTable } from '@components/SummaryTable';
-// import { useHttpClient } from '@context/HttpClientContext';
-// import { useHabits } from '@hooks/useHabits';
-// import './presentation/styles/global.css';
+import { useHttpClient } from "@context/HttpClientContext";
+import TodoList from "./entity/TodoList";
+import { useEffect, useState } from "react";
 
 export const App = () => {
-  // const { habitGateway } = useHttpClient();
-  // const { habit } = useHabits(habitGateway);
+  const { todosGateway } = useHttpClient();
+  const [data, setData] = useState([])
+  const [total, setTotal] = useState(0)
+  const [completed, setCompleted] = useState(0)
+
+  let todoList: any;
+  useEffect(() => {
+    const fetchData = async () => {
+      todoList = new TodoList()
+      const todosData = await todosGateway.getTodos();
+      setData(todosData)
+      todoList.addTodos(todosData);
+      setTotal(todoList.getTotal())
+      setCompleted(todoList.getCompleted())
+    }
+
+    fetchData()
+  }, [])
+
   return (
     <div>
-      <h1 style={{ color: "#000"}}>oi</h1>
+      <p>todo: {JSON.stringify(data)}</p>
+      <div>Total: {total}</div>
+	    <div>Completed: {completed}%</div>
     </div>
   );
 };
