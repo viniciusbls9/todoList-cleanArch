@@ -19,3 +19,20 @@ test("Should render initial todo list", async () => {
     await findByRole("heading", { name: "Completed: 0%" })
   ).toBeInTheDocument();
 });
+
+test("Should not let insert duplicated todo list", async () => {
+  const { findByRole, container } = render(<App />);
+
+  await sleep(100);
+  const input = screen.getByRole("input");
+  const button = container.getElementsByClassName("add-todo-button")[0];
+  fireEvent.change(input, { target: { value: "A" } });
+  fireEvent.click(button);
+  fireEvent.change(input, { target: { value: "A" } });
+  fireEvent.click(button);
+
+  expect(await findByRole("heading", { name: "Total: 2" })).toBeInTheDocument();
+  expect(
+    await findByRole("heading", { name: "Completed: 0%" })
+  ).toBeInTheDocument();
+});
