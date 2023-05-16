@@ -21,7 +21,7 @@
     "baseUrl": "./src",
     "paths": {
       "@assets/*": ["presentation/assets/*"],
-      "@components/*": ["presentation/components/*"],
+      "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
       "@presentation/*": ["presentation/*"],
       "@infra/*": ["infra/*"],
