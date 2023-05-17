@@ -36,5 +36,6 @@ export default class TodoList extends Observable {
 
   deleteTodo(todo: any) {
     this.todos.splice(this.todos.indexOf(todo), 1)
+    this.notify('delete-todo', todo)
   }
 }
