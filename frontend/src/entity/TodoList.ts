@@ -1,9 +1,11 @@
+import Observable from "../infra/observer/Observable";
 import Todo from "./Todo";
 
-export default class TodoList {
+export default class TodoList extends Observable {
   todos: Todo[]
 
   constructor () {
+    super()
     this.todos = []
   }
 
@@ -21,7 +23,9 @@ export default class TodoList {
 
   addTodo(description: string, done = false) {
     if (this.todos.some((todo: any) => todo.description === description)) return;
-    this.todos.push(new Todo(description, done))
+    const todo = new Todo(description, done)
+    this.todos.push(todo)
+    this.notify('add-todo', todo)
   }
 
   addTodos (todos: any) {
