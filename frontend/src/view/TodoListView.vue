@@ -10,6 +10,9 @@ import Observer from '../infra/observer/Observer';
   todoList.on(new Observer('add-todo', function (todo: Todo) {
     console.log(todo)
   }))
+  todoList.on(new Observer('delete-todo', function (todo: Todo) {
+    console.log(todo)
+  }))
 
   onMounted(async () => {
     const todosGateway = inject('todosGateway') as TodosGateway
