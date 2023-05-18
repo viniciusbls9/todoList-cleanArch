@@ -1,9 +1,11 @@
+import Observable from "@infra/observe/Observable";
 import Todo from "./Todo";
 
-export default class TodoList {
+export default class TodoList extends Observable {
   todos: Todo[]
 
-  constructor (readonly setTodo?: React.Dispatch<React.SetStateAction<number>>) {
+  constructor () {
+    super()
     this.todos = []
   }
 
@@ -21,10 +23,9 @@ export default class TodoList {
 
   addTodo(description: string, done = false) {
     if (this.todos.some((todo: any) => todo.description === description)) return;
-    this.todos.push(new Todo(description, done))
-    if (this.setTodo) {
-      this.setTodo(this.getTotal())
-    }
+    const todo = new Todo(description, done);
+		this.todos.push(todo);
+    this.notify("add-todo", todo);
   }
 
   addTodos (todos: any) {
@@ -35,5 +36,6 @@ export default class TodoList {
 
   deleteTodo(todo: any) {
     this.todos.splice(this.todos.indexOf(todo), 1)
+    this.notify("delete-todo", todo);
   }
 }
