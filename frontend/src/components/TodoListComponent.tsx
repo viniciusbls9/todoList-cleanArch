@@ -1,19 +1,28 @@
+import Observer from "@infra/observe/Observer";
+import Todo from "entity/Todo";
 import TodoList from "entity/TodoList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface TodoListComponent {
-  total: number;
-  completed: number;
   todoList: TodoList;
 }
 
-export const TodoListComponent = ({
-  total,
-  completed,
-  todoList,
-}: TodoListComponent) => {
+export const TodoListComponent = ({ todoList }: TodoListComponent) => {
   const [description, setDescription] = useState("");
+  const [total, setTotal] = useState(0);
+  const [completed, setCompleted] = useState(0);
 
+  useEffect(() => {
+    setTotal(todoList.getTotal());
+    setCompleted(todoList.getCompleted());
+
+    todoList.on(
+      new Observer("add-todo", function (todo: Todo) {
+        console.log(todo);
+        setTotal(todoList.getTotal());
+      })
+    );
+  }, []);
   return (
     <div>
       <h2>Total: {total}</h2>
