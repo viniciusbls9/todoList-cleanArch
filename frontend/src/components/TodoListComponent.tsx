@@ -1,36 +1,39 @@
-import Observer from "@infra/observe/Observer";
-import Todo from "entity/Todo";
 import TodoList from "entity/TodoList";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface TodoListComponent {
+  total: number;
+  completed: number;
   todoList: TodoList;
 }
 
-export const TodoListComponent = ({ todoList }: TodoListComponent) => {
+export const TodoListComponent = ({
+  total,
+  completed,
+  todoList,
+}: TodoListComponent) => {
   const [description, setDescription] = useState("");
-  const [total, setTotal] = useState(0);
-  const [completed, setCompleted] = useState(0);
 
-  useEffect(() => {
-    setTotal(todoList.getTotal());
-    setCompleted(todoList.getCompleted());
-
-    todoList.on(
-      new Observer("add-todo", function (todo: Todo) {
-        console.log(todo);
-        setTotal(todoList.getTotal());
-      })
-    );
-  }, []);
   return (
     <div>
       <h2>Total: {total}</h2>
       <h2>Completed: {completed}%</h2>
 
+      <div>
+        {todoList.todos.map((todo) => (
+          <>
+            <div className="todo-description">{todo.description}</div>
+            <div style={{ marginBottom: 20 }}> - {String(todo.done)}</div>
+            <button onClick={() => todo.toggleDone()}>done/undone</button>
+            <button onClick={() => todoList.deleteTodo(todo)}>delete</button>
+          </>
+        ))}
+      </div>
+
       <input
         role="input"
         type="text"
+        style={{ marginTop: 40 }}
         onChange={(e) => setDescription(e.target.value)}
       />
       <button
